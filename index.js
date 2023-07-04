@@ -20,12 +20,28 @@ const client = new MongoClient(uri, {
     }
 });
 
+const portfolio = [
+    {
+        name: 'Coffee Buddy',
+        technologies: 'ReactJS, Javascript, NodeJS, ExpressJS, MongoDB',
+        img: '',
+        shortDescription: ''
+    }
+]
+
 
 async function server() {
     try {
         await client.connect();
         console.log('database is connected succeessfully 🔥');
+        const portfolioCollection = client.db('zillur-rahman').collection('portfolio')
 
+        app.get('/portfolios', async (req, res) => {
+            const query = {}
+            const cursor = portfolioCollection.find(query)
+            const result = await cursor.toArray()
+            res.send(result)
+        })
 
     } catch (err) {
         console.log(err);
